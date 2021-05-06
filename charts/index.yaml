@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  stoomlink-devcontainer-base:
+  - apiVersion: v1
+    appVersion: 0.14.3-rc.10
+    created: "2021-05-06T22:21:10.025239143Z"
+    description: stoomlink-devcontainer-base is so cool
+    digest: 31c0016764c020e944ddfa7a454f6f190950378d8c9fa242a845997982631435
+    name: stoomlink-devcontainer-base
+    urls:
+    - https://nextmoov.github.io/charts/charts/stoomlink-devcontainer-base-0.14.3-rc.10.tgz
+    version: 0.14.3-rc.10
+generated: "2021-05-06T22:21:10.024270983Z"
