@@ -1,0 +1,55 @@
+{{- with .Values.servicesConfig }}
+  {{- range $.Values.services }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ . }}
+  name: {{ . }}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: {{ . }}
+  template:
+    metadata:
+      labels:
+        app: {{ . }}
+    spec:
+      imagePullSecrets:
+      - name: {{ $.Values.secrets.dockerRegistry }}
+      containers:
+      - image: {{ $.Values.image.owner }}/{{ $.Values.image.name }}:{{ $.Values.image.tag }}
+        imagePullPolicy: Always
+        name: {{ . }}
+        resources:
+          requests:
+            memory: {{ $.Values.resources.requests.memory | quote  }}
+            cpu: {{ $.Values.resources.requests.cpu | quote  }}
+          limits:
+            memory: {{ $.Values.resources.limits.memory | quote  }}
+            cpu: {{ $.Values.resources.limits.cpu | quote  }}
+        env:
+          - name: NODE_ENV
+            value: {{ $.Values.env.nodeEnv | quote  }}
+          - name: TELL_ME_WHAT_MODULE_TO_RUN
+            value: {{ . | quote  }}
+          - name: STOOMLINK_ENV
+            value: {{ $.Values.env.stoomlinkEnv | quote  }}
+          - name: SENTRY_DSN
+            value: {{ $.Values.env.sentryDsn | quote  }}
+        ports:
+          - containerPort: {{ $.Values.service.port }}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ $.Values.service.port }}
+            scheme: HTTP
+          initialDelaySeconds: 30 # Allow up to 1min to initially load
+      restartPolicy: Always
+  {{- end }}
+{{- end }}
+
