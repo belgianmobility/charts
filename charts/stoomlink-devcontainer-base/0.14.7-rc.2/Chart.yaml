@@ -1,0 +1,7 @@
+# Required:
+apiVersion: v1
+name: stoomlink-devcontainer-base
+version: 0.14.7-rc.2
+# optional:
+appVersion: 0.14.7-rc.2
+description: stoomlink-devcontainer-base is so cool
