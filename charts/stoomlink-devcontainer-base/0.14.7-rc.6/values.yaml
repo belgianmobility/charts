@@ -1,0 +1,57 @@
+nodeEnv: production
+name: stoomlink-devcontainer-base
+deployment:
+  name: stoomlink-devcontainer-base
+service:
+  port: 80
+
+# apps:
+#   - client1
+
+services:
+  - server1
+  # - server2
+
+# appConfig:
+#   foo: bar
+
+servicesConfig:
+  - server1:
+    foo: bar
+  - server2: bar
+    foo: bafoo
+
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: ".5"
+  limits:
+    memory: "256Mi"
+    cpu: ".5"
+
+image:
+  tag: 0.14.7-rc.6
+  name: stoomlink-devcontainer-base
+  owner: nextmoov
+# nextmoov/stoomlink-devcontainer-base:0.14.7-rc.6
+
+client-image:
+  tag: 0.14.7-rc.6
+  name: stoomlink-devcontainer-base-client
+  owner: nextmoov
+
+ingress:
+  enabled: true
+  host: stoomlink.io
+  # subdomain: schema.ing-pip
+  subdomain: web
+
+secrets:
+  dockerRegistry: registry-docker-io-nextmoov
+
+env:
+  nodeEnv: "production"
+  stoomlinkEnv: "playground"
+  pgConnectionString: "postgis://usr:pwd@postgis:5432"
+  sentryDsn: "https://00000000000000000000000000000000@x000000.ingest.sentry.io/0000000"
