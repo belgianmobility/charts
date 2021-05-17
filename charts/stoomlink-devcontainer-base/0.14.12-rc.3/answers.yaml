@@ -1,0 +1,7 @@
+env.nodeEnv: "production"
+env.stoomlinkEnv: "production"
+env.pgConnectionString: "postgis://usr:pwd@postgis:5432"
+env.sentryDsn: "https://00000000000000000000000000000000@x000000.ingest.sentry.io/0000000"
+
+ingress.host: "stoomlink.io"
+ingress.subdomain: "web"
