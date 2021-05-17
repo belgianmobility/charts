@@ -11,11 +11,11 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ $key }}.{{ $.Values.webappIngress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.webappIngress.host }}
+    - {{ $key }}.{{ $.Values.ingress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.ingress.host }}
     # Must be unique
-    secretName: {{ $key }}.{{ $.Values.webappIngress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.webappIngress.host }}-tls-uniq-secret
+    secretName: {{ $key }}.{{ $.Values.ingress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.ingress.host }}-tls-uniq-secret
   rules:
-  - host: {{ $key }}.{{ $.Values.webappIngress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.webappIngress.host }}
+  - host: {{ $key }}.{{ $.Values.ingress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.ingress.host }}
     http:
       paths:
       - backend:

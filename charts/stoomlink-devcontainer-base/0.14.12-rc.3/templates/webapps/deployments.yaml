@@ -24,7 +24,8 @@ spec:
       imagePullSecrets:
       - name: {{ $.Values.secrets.dockerRegistry }}
       containers:
-      - image: {{ $.Values.imageWeb.owner }}/{{ $.Values.imageWeb.name }}{{ $val.imageSuffix }}:{{ $.Values.imageWeb.tag }}
+      # - image: {{ $.Values.image.owner }}/{{ $.Values.image.name }}:{{ $.Values.image.tag }}
+      - image: {{ $.Values.image.owner }}/{{ $.Values.image.name }}-web{{ $val.imageSuffix }}:{{ $.Values.image.tag }}
         imagePullPolicy: Always
         name: {{ $key }}
         resources:

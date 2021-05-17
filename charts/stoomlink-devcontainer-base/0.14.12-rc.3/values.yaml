@@ -1,10 +1,25 @@
 nodeEnv: production
-name: stoomlink-web
+name: stoomlink-devcontainer-base
 deployment:
-  name: stoomlink-web
+  name: stoomlink-devcontainer-base
 service:
   port: 80
 
+# apps:
+#   - client1
+
+services:
+  - server2
+  # - root
+  # - journey-planner
+
+# client:
+#   root:
+#     imageSuffix:
+#     value: foo1
+#   journey-planner:
+#     imageSuffix: -journey-planner
+#     value: bar2
 
 webapps:
   app:
@@ -18,15 +33,24 @@ webapis:
   graphql:
     some: things
 
-imageWeb:
-  tag: 0.14.12-rc.3
-  name: stoomlink-devcontainer-base-web
-  owner: nextmoov
+# api:
+#   search:
+#     imageSuffix:
+#     value: foo1
+#   postgraphile:
+#     imageSuffix: -journey-planner
+#     value: bar2
 
-imageBackend:
-  tag: 0.14.12-rc.3
-  name: stoomlink-devcontainer-base-backend
-  owner: nextmoov
+
+# appConfig:
+#   foo: bar
+
+servicesConfig:
+  - server1:
+    foo: bar
+  - server2: bar
+    foo: bafoo
+
 
 resources:
   requests:
@@ -36,17 +60,16 @@ resources:
     memory: "256Mi"
     cpu: ".5"
 
-webappIngress:
-  enabled: true
-  host: stoomlink.io
-  # subdomain: schema.ing-pip
-  subdomain: web
+image:
+  tag: 0.14.12-rc.3
+  name: stoomlink-devcontainer-base
+  owner: nextmoov
+# nextmoov/stoomlink-devcontainer-base:0.14.12-rc.3
 
-apiIngress:
-  enabled: true
-  host: stoomlink.io
-  # subdomain: schema.ing-pip
-  subdomain: api
+client-image:
+  tag: 0.14.12-rc.3
+  name: stoomlink-devcontainer-base-client
+  owner: nextmoov
 
 ingress:
   enabled: true
@@ -67,3 +90,11 @@ clientEnv:
   reactAppSearch: "search.stoomlink.io"
   reactAppOtpUrl: "otp.stoomlink.io"
   reactAppPostgraphileUrl: "postgraphile.stoomlink.io/graphql"
+
+
+          # - name: REACT_APP_SEARCH_URL
+          #   value: "https://search.stoomlink.io"
+          # - name: REACT_APP_OTP_HOST
+          #   value: "https://otp.stoomlink.io"
+          # - name: REACT_APP_POSTGRAPHILE_URL
+          #   value: "https://playground.postgraphile.stoomlink.io/graphql"
