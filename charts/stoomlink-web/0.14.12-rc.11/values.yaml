@@ -1,0 +1,69 @@
+nodeEnv: production
+name: stoomlink-web
+deployment:
+  name: stoomlink-web
+service:
+  port: 80
+
+
+webapps:
+  app:
+    imageSuffix:
+  smop4bike:
+    imageSuffix: -smop4bike
+
+webapis:
+  search:
+    meta: data
+  graphql:
+    some: things
+
+imageWeb:
+  tag: 0.14.12-rc.11
+  name: stoomlink-devcontainer-base-web
+  owner: nextmoov
+
+imageBackend:
+  tag: 0.14.12-rc.11
+  name: stoomlink-devcontainer-base-backend
+  owner: nextmoov
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: ".5"
+  limits:
+    memory: "256Mi"
+    cpu: ".5"
+
+webappIngress:
+  enabled: true
+  host: stoomlink.io
+  # subdomain: schema.ing-pip
+  subdomain: web
+
+apiIngress:
+  enabled: true
+  host: stoomlink.io
+  # subdomain: schema.ing-pip
+  subdomain: api
+
+ingress:
+  enabled: true
+  host: stoomlink.io
+  # subdomain: schema.ing-pip
+  subdomain: web
+
+secrets:
+  dockerRegistry: registry-docker-io-nextmoov
+
+env:
+  nodeEnv: "production"
+  stoomlinkEnv: "playground"
+  pgConnectionString: "postgis://usr:pwd@postgis:5432"
+  sentryDsn: "https://00000000000000000000000000000000@x000000.ingest.sentry.io/0000000"
+  # clients env: NO SECRETS!!!!!!
+clientEnv:
+  reactAppSearch: "search.stoomlink.io"
+  reactAppOtpUrl: "otp.stoomlink.io"
+  reactAppPostgraphileUrl: "postgraphile.stoomlink.io/graphql"
