@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage-postgis-{{ $.Values.env.playground }}
+  labels:
+    app: storage-postgis-{{ $.Values.env.playground }}
+spec:
+  selector:
+    app: storage-postgis-{{ $.Values.env.playground }}
+  ports:
+    - protocol: TCP
+      port: 5432
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: storage-postgis-{{ $.Values.env.playground }}
+  name: storage-postgis-{{ $.Values.env.playground }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: storage-postgis-{{ $.Values.env.playground }}
+  template:
+    metadata:
+      labels:
+        app: storage-postgis-{{ $.Values.env.playground }}
+    spec:
+      imagePullSecrets:
+        - name: registry-docker-io-nextmoov
+      containers:
+        - image: nextmoov/stoomlink-postgis-docker:latest
+          resources:
+            requests:
+              memory: "4Gi"
+              cpu: 1
+            limits:
+              memory: "4Gi"
+              cpu: 1
+          imagePullPolicy: Always
+          name: storage-postgis-{{ $.Values.env.playground }}
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "gis"
+            - name: PGPASSWORD
+              value: "gis"
+            - name: POSTGRES_USER
+              value: "gis"
+            - name: PGUSER
+              value: "gis"
+            - name: PGDATABASE
+              value: "gis"
+            - name: TIMESCALEDB_TELEMETRY
+              value: "off"
+          ports:
+            - containerPort: 5432
+            # - containerPort: 80
+          # volumeMounts:
+          #   - name: storage-postgis-{{ $.Values.env.playground }}-data
+          #     # mountPath: "/var/lib/postgresql/data"
+          #     mountPath: "/var/lib/postgresql"
+      restartPolicy: Always
+      # volumes:
+      #   - name: storage-postgis-{{ $.Values.env.playground }}-data
+      #     persistentVolumeClaim:
+      #       claimName: storage-postgis-{{ $.Values.env.playground }}-data
