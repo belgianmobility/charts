@@ -1,0 +1,7 @@
+# Required:
+apiVersion: v1
+name: stoomlink-schema
+version: 0.14.12-rc.40
+# optional:
+appVersion: 0.14.12-rc.40
+description: stoomlink-schema is so cool
