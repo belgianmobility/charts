@@ -1,0 +1,12 @@
+# Required:
+apiVersion: v1
+name: stoomlink-ingestion-storage
+version: 0.14.12-rc.45
+# optional:
+appVersion: 0.14.12-rc.45
+description: stoomlink-ingestion-storage is so cool
+
+dependencies:
+- name: kafka
+  version: "0.8.0"
+  repository: "https://github.com/rancher/charts"
