@@ -1,0 +1,7 @@
+# Required:
+apiVersion: v1
+name: stoomlink-web
+version: 1.1.1-rc.8
+# optional:
+appVersion: 1.1.1-rc.8
+description: stoomlink-web is so cool
