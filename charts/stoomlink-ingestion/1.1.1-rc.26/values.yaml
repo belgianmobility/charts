@@ -1,0 +1,148 @@
+nodeEnv: production
+name: stoomlink-ingestion
+deployment:
+  name: stoomlink-ingestion
+service:
+  port: 80
+
+connectors:
+  gtfs-nmbs:
+    moduleName: gtfs-nmbs
+    envs:
+      playground:
+        env:
+          NMBS_STATIC_GTFS_ACCESS_KEY: c21ac6758dd25af84cca5b707f3cb3de
+      staging:
+        env:
+          NMBS_STATIC_GTFS_ACCESS_KEY: c21ac6758dd25af84cca5b707f3cb3de
+      production:
+        env:
+          NMBS_STATIC_GTFS_ACCESS_KEY: c21ac6758dd25af84cca5b707f3cb3de
+  gtfs-delijn:
+    moduleName: gtfs-delijn
+  gtfs-mivb:
+    moduleName: gtfs-mivb
+  gtfs-tec:
+    moduleName: gtfs-tec
+  gtfs-tec-rt-trip:
+    moduleName: gtfs-tec-rt-trip
+    envs:
+      playground:
+        env:
+          TEC_KEY: 27E249465DCC4086ACEC940AC1BAE0D5
+      staging:
+        env:
+          TEC_KEY: 27E249465DCC4086ACEC940AC1BAE0D5
+      production:
+        env:
+          TEC_KEY: 880411E12B9B4497ABB1E3C0335D99E1
+  gtfs-tec-rt-alert:
+    moduleName: gtfs-tec-rt-alert
+    envs:
+      playground:
+        env:
+          TEC_KEY: 27E249465DCC4086ACEC940AC1BAE0D5
+      staging:
+        env:
+          TEC_KEY: 27E249465DCC4086ACEC940AC1BAE0D5
+      production:
+        env:
+          TEC_KEY: 880411E12B9B4497ABB1E3C0335D99E1
+  gbfs-billybike:
+    moduleName: gbfs-billybike
+    envs:
+      playground:
+        env:
+          BB_TOKEN: b5b96c0b93481b49e88eb5a9507d03ed671242ef4541a61206eb1c6ac721073b
+      staging:
+        env:
+          BB_TOKEN: b5b96c0b93481b49e88eb5a9507d03ed671242ef4541a61206eb1c6ac721073b
+      production:
+        env:
+          BB_TOKEN: b5b96c0b93481b49e88eb5a9507d03ed671242ef4541a61206eb1c6ac721073b
+  traffic-alert-waze:
+    moduleName: traffic-alert-waze
+
+assetsDownloader:
+  assets-downloader:
+    stuff: true
+    # TODO: move those into global env so everybody can need can fetch files ?
+    # that said, kafka is the messenger and should carry the url so, maybe not
+    env:
+      ASSETS_SERVER_HOST: "assets-server"
+      ASSETS_SERVER_PROTOCOL: "http://"
+      ASSETS_SERVER_PORT: 80
+
+optGraphBuilders:
+  # Comment out for now as we need resource to deploy that
+  # otp-build-graph:
+  #   resources:
+  #     requests:
+  #       memory: "8Gi"
+  #       cpu: "1"
+  #     limits:
+  #       memory: "8Gi"
+  #       cpu: "1"
+
+assetsServer:
+  assets-server:
+    stuff: true
+
+producers:
+  producer:
+    stuff: true
+
+producersext:
+  producer-ext:
+    stuff: true
+
+publishers:
+  publisher:
+    stuff: true
+
+publishersext:
+  publisher-ext:
+    stuff: true
+
+osmImporters:
+  be-osm-importer:
+    envs:
+      playground:
+        env:
+          STOOMLINK_VERBOSE: "true"
+      staging:
+        env:
+          STOOMLINK_VERBOSE: "true"
+      production:
+        env:
+          STOOMLINK_VERBOSE: "true"
+
+image:
+  tag: 1.1.1-rc.26
+  name: stoomlink-devcontainer-base-backend
+  owner: nextmoov
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: ".5"
+  limits:
+    memory: "200Mi"
+    cpu: ".5"
+
+ingress:
+  enabled: true
+  host: stoomlink.io
+  subdomain: ingestion
+
+secrets:
+  dockerRegistry: registry-docker-io-nextmoov
+
+env:
+  nodeEnv: "production"
+  stoomlinkEnv: "playground"
+  # pgConnectionString: "postgresql://doadmin:ys5czhm7nzz6xw33@private-stoomlink-db-postgres-cluster-202104-do-user-211558-0.b.db.ondigitalocean.com:25060/stoomlink-staging?sslmode=require-{{ $.Values.env.stoomlinkEnv }}:5432"
+  pgConnectionString: "postgresql://doadmin:ys5czhm7nzz6xw33@private-stoomlink-db-postgres-cluster-202104-do-user-211558-0.b.db.ondigitalocean.com:25060"
+  # kafkaUrl: "ingestion-storage-staging-cp-kafka:9092"
+  kafkaUrl: "ingestion-storage-cp-kafka:9092"
+  sentryDsn: "https://00000000000000000000000000000000@x000000.ingest.sentry.io/0000000"
