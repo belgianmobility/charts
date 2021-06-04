@@ -1,0 +1,85 @@
+nodeEnv: production
+name: stoomlink-web
+deployment:
+  name: stoomlink-web
+service:
+  port: 80
+
+webapps:
+  app:
+    imageSuffix:
+  smop4bike:
+    imageSuffix: -smop4bike
+
+webapis:
+  search:
+    meta: data
+  graphql:
+    some: things
+
+legacyWebShouldBeIngestion:
+  map-tiles:
+    envs:
+      playground:
+        env:
+          STOOMLINK_VERBOSE: "true"
+      staging:
+        env:
+          STOOMLINK_VERBOSE: "true"
+      production:
+        env:
+          STOOMLINK_VERBOSE: "true"
+
+imageWeb:
+  tag: 1.1.1-rc.38
+  name: stoomlink-devcontainer-base-web
+  owner: nextmoov
+
+imageBackend:
+  tag: 1.1.1-rc.38
+  name: stoomlink-devcontainer-base-backend
+  owner: nextmoov
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: ".5"
+  limits:
+    memory: "200Mi"
+    cpu: ".5"
+
+webappIngress:
+  enabled: true
+  host: stoomlink.io
+  # subdomain: schema.ing-pip
+  subdomain: web
+
+apiIngress:
+  enabled: true
+  host: stoomlink.io
+  # subdomain: schema.ing-pip
+  subdomain: api
+
+ingress:
+  enabled: true
+  host: stoomlink.io
+  # subdomain: schema.ing-pip
+  subdomain: web
+
+secrets:
+  dockerRegistry: registry-docker-io-nextmoov
+
+env:
+  nodeEnv: "production"
+  stoomlinkEnv: "playground"
+  # pgConnectionString: "postgresql://doadmin:ys5czhm7nzz6xw33@private-stoomlink-db-postgres-cluster-202104-do-user-211558-0.b.db.ondigitalocean.com:25060-{{ $.Values.env.stoomlinkEnv }}:5432"
+  pgConnectionString: "postgresql://doadmin:ys5czhm7nzz6xw33@private-stoomlink-db-postgres-cluster-202104-do-user-211558-0.b.db.ondigitalocean.com:25060"
+  # kafkaUrl: "ingestion-storage-staging-cp-kafka:9092"
+  kafkaUrl: "ingestion-storage-cp-kafka:9092"
+  sentryDsn: "https://00000000000000000000000000000000@x000000.ingest.sentry.io/0000000"
+  # clients env: NO SECRETS!!!!!!
+clientEnv:
+  reactAppSearch: "search"
+  reactAppGraphqlUrl: "graphql"
+  reactAppOtpUrl: "otp"
+  # reactAppPostgraphileUrl: "postgraphile"
