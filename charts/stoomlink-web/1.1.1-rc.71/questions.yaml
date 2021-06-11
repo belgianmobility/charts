@@ -1,0 +1,53 @@
+labels:
+  io.cattle.role: project # options are cluster/project
+categories:
+- Database
+# - MySQL
+questions:
+- variable: env.nodeEnv
+  default: "production"
+  description: "NODE_ENV value for Runtime."
+  type: string
+  label: NODE_ENV
+  required: true
+  group: "env"
+
+- variable: env.stoomlinkEnv
+  default: "production"
+  description: "stoomlinkEnv for sentry reporting."
+  type: string
+  label: STOOMLINK_ENV
+  required: true
+  group: "env"
+
+- variable: env.sentryDsn
+  default: "https://00000000000000000000000000000000@x000000.ingest.sentry.io/0000000"
+  description: "sentry dsn (SENTRY_DSN)"
+  type: string
+  label: Sentry dsn
+  required: true
+  group: "env"
+
+- variable: ingress.host
+  default: "stoomlink.io"
+  description: "host name (TLD)"
+  type: string
+  label: ingress.host
+  required: true
+  group: "ingress"
+
+# - variable: env.pgConnectionString
+#   default: "postgis://usr:pwd@postgis:5432"
+#   description: "Pg connection strign (DB name ommited)"
+#   type: string
+#   label: env.pgConnectionString
+#   required: true
+#   group: "services"
+
+- variable: ingress.subdomain
+  default: "web"
+  description: "subdomain (e.g. <sudomain>.<host>)"
+  type: string
+  label: ingress.subdomain
+  required: true
+  group: "ingress"
