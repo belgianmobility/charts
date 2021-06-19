@@ -1,0 +1,45 @@
+nodeEnv: production
+name: stoomlink-storage
+deployment:
+  name: stoomlink-storage
+service:
+  port: 80
+
+# resources:
+#   requests:
+#     memory: "128Mi"
+#     cpu: ".5"
+#   limits:
+#     memory: "256Mi"
+#     cpu: ".5"
+
+ingress:
+  enabled: true
+  host: stoomlink.io
+  subdomain: storage
+
+nodeport:
+  playground: 32100
+  staging: 32101
+  production: 32102
+
+nodeportPg:
+  playground: 32103
+  staging: 32104
+  production: 32105
+
+mongoUsers:
+  # dockerRegistry: registry-docker-io-nextmoov
+  playground: stoomlink-playground
+  staging: stoomlink-staging
+  production: stoomlink-production
+
+mongoPwd:
+  # dockerRegistry: registry-docker-io-nextmoov
+  playground: vwUVjvbX9msZHZYDsBtkkcww
+  staging: faxDFwmcdZHymDmVoui8ftwZ
+  production: ZmHnkNGUYZJjeaXaz7yHiQos
+
+env:
+  nodeEnv: "production"
+  stoomlinkEnv: "staging"
