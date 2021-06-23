@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mongo-db-{{ $.Values.env.stoomlinkEnv }}
+  name: mongo-db-{{ $.Values.env.stoomlinkEnv }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-db-{{ $.Values.env.stoomlinkEnv }}
+  template:
+    metadata:
+      labels:
+        app: mongo-db-{{ $.Values.env.stoomlinkEnv }}
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - image: mongo:4.2
+          name: mongo
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+          {{- range $key, $value := .Values.mongoUsers }}
+            {{- if eq $key $.Values.env.stoomlinkEnv }}
+              value: {{ $value }}
+            {{- end }}
+          {{- end }}
+            - name: MONGO_INITDB_ROOT_PASSWORD
+          {{- range $key, $value := .Values.mongoPwd }}
+            {{- if eq $key $.Values.env.stoomlinkEnv }}
+              value: {{ $value }}
+            {{- end }}
+          {{- end }}
+            - name: MONGO_INITDB_DATABASE
+              value: "customers"
+          command: ["docker-entrypoint.sh", "--wiredTigerCacheSizeGB", "2.0"]
+          resources:
+            requests:
+              memory: "2.0G"
+          volumeMounts:
+            - mountPath: "/data/db"
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mongo-pvc-{{ $.Values.env.stoomlinkEnv }}
+
