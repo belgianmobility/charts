@@ -1,0 +1,13 @@
+# Required:
+apiVersion: v1
+name: stoomlink-storage
+version: 1.1.1-rc.107
+# optional:
+appVersion: 1.1.1-rc.107
+description: stoomlink-storage is so cool
+
+
+dependencies:
+- name: efk
+  version: "7.3.0"
+  repository: "https://github.com/rancher/charts"
