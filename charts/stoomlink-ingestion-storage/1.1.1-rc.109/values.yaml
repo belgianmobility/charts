@@ -1,0 +1,17 @@
+nodeEnv: production
+name: stoomlink-ingestion-storage
+deployment:
+  name: stoomlink-ingestion-storage
+service:
+  port: 80
+
+
+ingress:
+  enabled: true
+  host: stoomlink.io
+  subdomain: ingestion-storage
+
+
+env:
+  nodeEnv: "production"
+  stoomlinkEnv: "playground"
