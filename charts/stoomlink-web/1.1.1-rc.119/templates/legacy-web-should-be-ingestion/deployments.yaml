@@ -1,0 +1,85 @@
+{{- range $key, $val := .Values.legacyWebShouldBeIngestion }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ $key }}
+  name: {{ $key }}
+spec:
+  replicas: 1
+  strategy:
+    # rollingUpdate:
+    #   maxSurge: 25%
+    #   maxUnavailable: 0
+    # type: RollingUpdate # this is thing that shold be in ingestion
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ $key }}
+  template:
+    metadata:
+      labels:
+        app: {{ $key }}
+    spec:
+      imagePullSecrets:
+      - name: {{ $.Values.secrets.dockerRegistry }}
+      containers:
+      - image: {{ $.Values.imageWeb.owner }}/{{ $.Values.imageWeb.name }}:{{ $.Values.imageWeb.tag }}
+        imagePullPolicy: Always
+        name: {{ $key }}
+        resources:
+    # {{- range $key1, $value := $val.envs }}
+    #   {{- if eq $key1 $.Values.env.stoomlinkEnv }}
+    #     {{- range $k, $v := $value.resources }}
+    #       {{ $k | }}:
+    #         cpu: {{ $v.cpu | quote }}
+    #         memory: {{ $v.memory | quote }}
+    #     {{- end }}
+    #   {{- end }}
+    # {{- end }}
+        env:
+          - name: STOOMLINK_APP
+            value: {{ $key | quote }}
+          - name: PORT
+            value: {{ $.Values.service.port | quote }}
+          - name: NODE_ENV
+            value: {{ $.Values.env.nodeEnv | quote }}
+          # - name: STOOMLINK_MODULE
+          #   value: {{ $key | quote }}
+          - name: STOOMLINK_ENV
+            value: {{ $.Values.env.stoomlinkEnv | quote }}
+          - name: SENTRY_DSN
+            value: {{ $.Values.env.sentryDsn | quote }}
+          - name: KAFKA_URL
+            value: "{{ $.Values.env.stoomlinkEnv }}-{{ $.Values.env.kafkaUrl }}"
+          # - name: POSTGIS_CS
+          #   value: "{{ $.Values.env.pgConnectionString }}"
+          - name: POSTGIS_CS
+            value: "postgis://gis:gis@{{ $.Values.env.stoomlinkEnv }}-{{ $.Values.env.pgConnectionString }}"
+        {{- range $key1, $value := $val.envs }}
+          {{- if eq $key1 $.Values.env.stoomlinkEnv }}
+            {{- range $k, $v := $value.env }}
+          - name: {{ $k }}
+            value: {{ $v | quote }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+        ports:
+          - containerPort: {{ $.Values.service.port }}
+        volumeMounts:
+          - mountPath: "/data"
+            name: data
+        readinessProbe:
+          httpGet:
+            path: /k8s-probe
+            port: {{ $.Values.service.port }}
+            scheme: HTTP
+          initialDelaySeconds: 10 # Allow up to 1min to initially load
+      restartPolicy: Always
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ $key }}-{{ $.Values.env.stoomlinkEnv }}-data
+{{- end }}
+
