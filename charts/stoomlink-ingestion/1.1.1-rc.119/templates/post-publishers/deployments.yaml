@@ -1,0 +1,86 @@
+{{- range $key, $val := .Values.postPublishers }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ $key }}
+  name: {{ $key }}
+spec:
+  # replicas: 1
+  replicas: 0 # as a debug means for now
+  strategy:
+    # rollingUpdate:
+    #   maxSurge: 25%
+    #   maxUnavailable: 0
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ $key }}
+  template:
+    metadata:
+      labels:
+        app: {{ $key }}
+    spec:
+      imagePullSecrets:
+      - name: {{ $.Values.secrets.dockerRegistry }}
+      containers:
+      - image: {{ $.Values.image.owner }}/{{ $.Values.image.name }}:{{ $.Values.image.tag }}
+        imagePullPolicy: Always
+        name: {{ $key }}
+        # resources:
+        #   requests:
+        #     memory: {{ $.Values.resources.requests.memory | quote }}
+        #     cpu: {{ $.Values.resources.requests.cpu | quote }}
+        #   limits:
+        #     memory: {{ $.Values.resources.limits.memory | quote }}
+        #     cpu: {{ $.Values.resources.limits.cpu | quote }}
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: ".25"
+          limits:
+            memory: "200Mi"
+            cpu: ".5"
+        env:
+          # - name: STOOMLINK_APP
+          #   value: {{ $key | quote }}
+          - name: PORT
+            value: {{ $.Values.service.port | quote }}
+          - name: NODE_ENV
+            value: {{ $.Values.env.nodeEnv | quote }}
+          - name: STOOMLINK_MODULE
+            value: {{ $key | quote }}
+          - name: STOOMLINK_ENV
+            value: {{ $.Values.env.stoomlinkEnv | quote }}
+          - name: SENTRY_DSN
+            value: {{ $.Values.env.sentryDsn | quote }}
+          - name: KAFKA_URL
+            value: "{{ $.Values.env.stoomlinkEnv }}-{{ $.Values.env.kafkaUrl }}"
+          - name: ES_URLS
+            value: "{{ $.Values.env.elasticUrl }}"
+          # - name: POSTGIS_CS
+          #   value: "{{ $.Values.env.pgConnectionString }}"
+          - name: POSTGIS_CS
+            value: "postgis://gis:gis@{{ $.Values.env.stoomlinkEnv }}-{{ $.Values.env.pgConnectionString }}"
+        {{- range $key1, $value := $val.envs }}
+          {{- if eq $key1 $.Values.env.stoomlinkEnv }}
+            {{- range $k, $v := $value.env }}
+          - name: {{ $k }}
+            value: {{ $v | quote }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+
+
+        ports:
+          - containerPort: {{ $.Values.service.port }}
+        readinessProbe:
+          httpGet:
+            path: /k8s-probe
+            port: {{ $.Values.service.port }}
+            scheme: HTTP
+          initialDelaySeconds: 10 # Allow up to 1min to initially load
+      restartPolicy: Always
+{{- end }}
+
