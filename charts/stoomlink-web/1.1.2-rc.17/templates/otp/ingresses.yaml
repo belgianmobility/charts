@@ -1,0 +1,44 @@
+{{- range $key, $val := .Values.otp }}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $key }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+  - hosts:
+    - {{ $key }}.{{ $.Values.ingress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.ingress.host }}
+    # Must be unique
+    secretName: {{ $key }}.{{ $.Values.ingress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.ingress.host }}-tls-uniq-secret
+  rules:
+  - host: {{ $key }}.{{ $.Values.ingress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.ingress.host }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ $key }}
+          servicePort: {{ $.Values.service.port }}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $key }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+  - hosts:
+    - {{ $key }}-backend.{{ $.Values.ingress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.ingress.host }}
+    # Must be unique
+    secretName: {{ $key }}-backend.{{ $.Values.ingress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.ingress.host }}-tls-uniq-secret
+  rules:
+  - host: {{ $key }}-backend.{{ $.Values.ingress.subdomain }}.{{ $.Values.env.stoomlinkEnv }}.{{ $.Values.ingress.host }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ $key }}-backend
+          servicePort: {{ $.Values.service.port }}
+{{- end }}
