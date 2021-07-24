@@ -1,0 +1,57 @@
+nodeEnv: production
+name: stoomlink-schema
+deployment:
+  name: stoomlink-schema
+service:
+  port: 80
+
+setup:
+  schema:
+    moduleName: schema
+    envs:
+      # playground:
+      #   env:
+      #     POSTGIS_CS: "true"
+      # staging:
+      #   env:
+      #     POSTGIS_CS: "postgis://gis:gis@stoomlink-main-db-cluster-202107-do-user-211558-0.b.db.ondigitalocean.com:25060"
+      # production:
+      #   env:
+      #     POSTGIS_CS: ""
+
+producer:
+  foo: true
+
+image:
+  tag: 1.1.2-rc.26
+  name: stoomlink-devcontainer-base-backend
+  owner: nextmoov
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: ".5"
+  limits:
+    memory: "200Mi"
+    cpu: ".5"
+
+ingress:
+  enabled: true
+  host: stoomlink.io
+  subdomain: schema
+
+secrets:
+  dockerRegistry: registry-docker-io-nextmoov
+
+env:
+  nodeEnv: "production"
+  stoomlinkEnv: "playground"
+  # pgConnectionString: "postgis://gis:gis@storage-postgis-{{ $.Values.env.stoomlinkEnv }}:5432"
+  # pgConnectionString: "postgis://gis:gis@storage-postgis"
+  # pgConnectionString: "postgis://gis:gis@stoomlink-main-db-cluster-202107-do-user-211558-0.b.db.ondigitalocean.com:25060"
+  pgConnectionString: "stoomlink-main-db-cluster-202107-do-user-211558-0.b.db.ondigitalocean.com:25060"
+  # kafkaUrl: "ingestion-storage-staging-cp-kafka:9092"
+  elasticUrl: "http://elasticsearch-master:9200"
+  kafkaUrl: "ingestion-storage-cp-kafka:9092"
+  sentryDsn: "https://00000000000000000000000000000000@x000000.ingest.sentry.io/0000000"
+  apmServerHost: "http://apm-es:8200"
