@@ -1,0 +1,5 @@
+env.nodeEnv: "production"
+env.stoomlinkEnv: "playground"
+env.sentryDsn: "https://f1838c22a2be47b892621419bcf11b45@o146257.ingest.sentry.io/5773534"
+ingress.host: "stoomlink.io"
+ingress.subdomain: "ingestion"
