@@ -1,0 +1,10 @@
+apiVersion: v1
+name: stoomlink-storage
+description: Shared Storage Engines — Mongo, EFK and APM.
+version: 1.1.2-rc.43
+appVersion: 1.1.2-rc.43
+
+dependencies:
+  - name: efk
+    version: "7.3.0"
+    repository: "https://github.com/rancher/charts"
