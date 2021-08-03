@@ -1,0 +1,152 @@
+nodeEnv: production
+name: stoomlink-web
+deployment:
+  name: stoomlink-web
+service:
+  port: 80
+  otpPort: 8080
+
+webapps:
+  app:
+    imageSuffix:
+    envs:
+  smop4bike:
+    imageSuffix: -smop4bike
+    envs:
+
+  widgetserver:
+    imageSuffix: -widgetserver
+    envs:
+      playground:
+        env:
+          STOOMLINK_VERBOSE: "true"
+          STOOMLINK_APP_DISABLE_SSR: "true"
+      staging:
+        env:
+          STOOMLINK_VERBOSE: "true"
+          STOOMLINK_APP_DISABLE_SSR: "true"
+      production:
+        env:
+          STOOMLINK_VERBOSE: "true"
+          STOOMLINK_APP_DISABLE_SSR: "true"
+
+otp:
+  otp:
+    envs:
+      playground:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+          OTP_PORT: 8080
+      staging:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+          OTP_PORT: 8080
+      production:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+          OTP_PORT: 8080
+    resources:
+      requests:
+        memory: "6Gi"
+        cpu: "1"
+      limits:
+        memory: "8Gi"
+        cpu: "1"
+  # otpv2-build-graph:
+  #   resources:
+  #     requests:
+  #       memory: "6Gi"
+  #       cpu: "1"
+  #     limits:
+  #       memory: "8Gi"
+  #       cpu: "1"
+
+webapis:
+  search:
+    envs:
+  graphql:
+    envs:
+
+legacyWebShouldBeIngestion:
+  map-tiles:
+    envs:
+      playground:
+        env:
+          STOOMLINK_VERBOSE: "true"
+          DIGITALOCEAN_SPACES_HOST: "fra1.digitaloceanspaces.com"
+          DIGITALOCEAN_SPACES_ACCESS_KEY: "KACRGYN7IPMS6LJKM5BD"
+          DIGITALOCEAN_SPACES_SECRET_KEY: "QVI5kd7lFaNT2NL08wL/QrtB1zN5WS7Uq65xsn9ch+g"
+          TILES_CACHE_CDN_FOLDER_PATH: "tiles/playground"
+      staging:
+        env:
+          STOOMLINK_VERBOSE: "true"
+          DIGITALOCEAN_SPACES_HOST: "fra1.digitaloceanspaces.com"
+          DIGITALOCEAN_SPACES_ACCESS_KEY: "KACRGYN7IPMS6LJKM5BD"
+          DIGITALOCEAN_SPACES_SECRET_KEY: "QVI5kd7lFaNT2NL08wL/QrtB1zN5WS7Uq65xsn9ch+g"
+          TILES_CACHE_CDN_FOLDER_PATH: "tiles/staging"
+      production:
+        env:
+          STOOMLINK_VERBOSE: "true"
+          DIGITALOCEAN_SPACES_HOST: "fra1.digitaloceanspaces.com"
+          DIGITALOCEAN_SPACES_ACCESS_KEY: "KACRGYN7IPMS6LJKM5BD"
+          DIGITALOCEAN_SPACES_SECRET_KEY: "QVI5kd7lFaNT2NL08wL/QrtB1zN5WS7Uq65xsn9ch+g"
+          TILES_CACHE_CDN_FOLDER_PATH: "tiles/production"
+
+imageWeb:
+  tag: 1.1.2-rc.46
+  name: stoomlink-devcontainer-base-web
+  owner: nextmoov
+
+imageBackend:
+  tag: 1.1.2-rc.46
+  name: stoomlink-devcontainer-base-backend
+  owner: nextmoov
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: ".5"
+  limits:
+    memory: "200Mi"
+    cpu: ".5"
+
+webappIngress:
+  enabled: true
+  host: stoomlink.io
+  subdomain: web
+
+apiIngress:
+  enabled: true
+  host: stoomlink.io
+  subdomain: api
+
+ingress:
+  enabled: true
+  host: stoomlink.io
+  subdomain: web
+
+secrets:
+  dockerRegistry: registry-docker-io-nextmoov
+
+env:
+  nodeEnv: "production"
+  stoomlinkEnv: "playground"
+  pgConnectionString: "stoomlink-main-db-cluster-202107-do-user-211558-0.b.db.ondigitalocean.com:25060"
+  apmServerHost: "http://apm-es:8200"
+  elasticUrl: "http://elasticsearch-master:9200"
+  kafkaUrl: "ingestion-storage-cp-kafka:9092"
+  sentryDsn: "https://f1838c22a2be47b892621419bcf11b45@o146257.ingest.sentry.io/5773534"
+  # clients env: Do NOT put SECRETS here — They WILL endup in public bundled JS
+clientEnv:
+  reactAppSearch: "search"
+  reactAppGraphqlUrl: "graphql"
+  reactAppOtpUrl: "otp"
+  reactAppSchemaUrl: "schema"
+  reactAppSchemaSubdomain: "schema"
+  reactAppWidgetServerBase: "widgetserver"
