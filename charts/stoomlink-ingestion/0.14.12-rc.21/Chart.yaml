@@ -1,7 +1,0 @@
-# Required:
-apiVersion: v1
-name: stoomlink-ingestion
-version: 0.14.12-rc.21
-# optional:
-appVersion: 0.14.12-rc.21
-description: stoomlink-web is so cool

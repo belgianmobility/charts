@@ -1,6 +1,0 @@
-nodeEnv: production
-name: stoomlink-ingestion-storage
-deployment:
-  name: stoomlink-ingestion-storage
-service:
-  port: 80
