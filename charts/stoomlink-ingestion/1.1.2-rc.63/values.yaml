@@ -1,0 +1,291 @@
+nodeEnv: production
+name: stoomlink-ingestion
+deployment:
+  name: stoomlink-ingestion
+service:
+  port: 80
+
+# ==================================================================================================
+# Ingestion — Connectors Storage
+# ==================================================================================================
+connectorsStorage:
+  bestaddress-importer:
+    moduleName: bestaddress-importer
+    envs:
+      playground:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+      staging:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+      production:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+  gtfs-nmbs:
+    moduleName: gtfs-nmbs
+    envs:
+      playground:
+        env:
+          NMBS_STATIC_GTFS_ACCESS_KEY: c21ac6758dd25af84cca5b707f3cb3de
+      staging:
+        env:
+          NMBS_STATIC_GTFS_ACCESS_KEY: c21ac6758dd25af84cca5b707f3cb3de
+      production:
+        env:
+          NMBS_STATIC_GTFS_ACCESS_KEY: c21ac6758dd25af84cca5b707f3cb3de
+  gtfs-delijn:
+    moduleName: gtfs-delijn
+    envs:
+  gtfs-mivb:
+    moduleName: gtfs-mivb
+    envs:
+  gtfs-tec:
+    moduleName: gtfs-tec
+    envs:
+
+# ==================================================================================================
+# Ingestion — Connectors
+# ==================================================================================================
+connectors:
+  gtfs-nmbs-rt-trip:
+    moduleName: gtfs-nmbs-rt-trip
+    envs:
+  gtfs-tec-rt-trip:
+    moduleName: gtfs-tec-rt-trip
+    envs:
+      playground:
+        env:
+          TEC_KEY: 27E249465DCC4086ACEC940AC1BAE0D5
+      staging:
+        env:
+          TEC_KEY: 27E249465DCC4086ACEC940AC1BAE0D5
+      production:
+        env:
+          TEC_KEY: 880411E12B9B4497ABB1E3C0335D99E1
+
+  gtfs-tec-rt-alert:
+    moduleName: gtfs-tec-rt-alert
+    envs:
+      playground:
+        env:
+          TEC_KEY: 27E249465DCC4086ACEC940AC1BAE0D5
+      staging:
+        env:
+          TEC_KEY: 27E249465DCC4086ACEC940AC1BAE0D5
+      production:
+        env:
+          TEC_KEY: 880411E12B9B4497ABB1E3C0335D99E1
+  gbfs-billybike:
+    moduleName: gbfs-billybike
+    envs:
+      playground:
+        env:
+          BB_TOKEN: b5b96c0b93481b49e88eb5a9507d03ed671242ef4541a61206eb1c6ac721073b
+      staging:
+        env:
+          BB_TOKEN: b5b96c0b93481b49e88eb5a9507d03ed671242ef4541a61206eb1c6ac721073b
+      production:
+        env:
+          BB_TOKEN: b5b96c0b93481b49e88eb5a9507d03ed671242ef4541a61206eb1c6ac721073b
+  gbfs-bluebike:
+    moduleName: gbfs-bluebike
+    envs:
+  traffic-alert-waze:
+    moduleName: traffic-alert-waze
+    envs:
+  air-quality-issep:
+    moduleName: air-quality-issep
+    envs:
+  traffic-telraam:
+    moduleName: traffic-telraam
+    envs:
+      playground:
+        env:
+          TELRAAM_TOKEN: xDJwOw3k1211pl2sdeiP57OpfUG9iD659Uufdu97,i6aeQRQdi08pvx0m4KMvL5qh5GSjQVDG6TUW3PYG,e92mvPg7hL7NuvRLUGcA52Wk1OIFHoKc1RTMGhXU
+      staging:
+        env:
+          TELRAAM_TOKEN: xDJwOw3k1211pl2sdeiP57OpfUG9iD659Uufdu97,i6aeQRQdi08pvx0m4KMvL5qh5GSjQVDG6TUW3PYG,e92mvPg7hL7NuvRLUGcA52Wk1OIFHoKc1RTMGhXU
+      production:
+        env:
+          TELRAAM_TOKEN: xDJwOw3k1211pl2sdeiP57OpfUG9iD659Uufdu97,i6aeQRQdi08pvx0m4KMvL5qh5GSjQVDG6TUW3PYG,e92mvPg7hL7NuvRLUGcA52Wk1OIFHoKc1RTMGhXU
+  liege-taxi-parking:
+    moduleName: liege-taxi-parking
+    envs:
+  liege-shopdrive-parking:
+    moduleName: liege-shopdrive-parking
+    envs:
+  liege-bike-parking:
+    moduleName: liege-bike-parking
+    envs:
+
+# ==================================================================================================
+# Ingestion — Producers
+# ==================================================================================================
+producers:
+  producer:
+    envs:
+
+producersext:
+  producer-ext:
+    envs:
+
+# ==================================================================================================
+# Ingestion — Publishers
+# ==================================================================================================
+publishers:
+  publisher:
+    envs:
+
+publishersext:
+  publisher-ext:
+    envs:
+
+postPublishersDipatcher:
+  post-publisher-dispatcher:
+    envs:
+
+postPublishers:
+  gtfs-autocomplete:
+    envs:
+  gtfs-static-export:
+    envs:
+      playground:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+      staging:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+      production:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+  osm-autocomplete:
+    envs:
+  bestaddress-autocomplete:
+    envs:
+
+# ==================================================================================================
+# Ingestion — Misc
+# ==================================================================================================
+assetsDownloader:
+  assets-downloader:
+    # TODO: move those into global env so everybody can fetch files ?
+    # that said, kafka is the messenger and should carry the url so, maybe not
+    env:
+      ASSETS_SERVER_HOST: "assets-server"
+      ASSETS_SERVER_PROTOCOL: "http://"
+      ASSETS_SERVER_PORT: 80
+
+optGraphBuilders:
+  otp-build-graph:
+    envs:
+      playground:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+      staging:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+      production:
+        env:
+          ASSETS_SERVER_HOST: "assets-server"
+          ASSETS_SERVER_PROTOCOL: "http://"
+          ASSETS_SERVER_PORT: 80
+    resources:
+      requests:
+        memory: "6Gi"
+        cpu: "1"
+      limits:
+        memory: "8Gi"
+        cpu: "1"
+assetsServer:
+  assets-server:
+
+# ==================================================================================================
+# Modules
+# ==================================================================================================
+modules:
+  osm-importer:
+    envs:
+      playground:
+        env:
+          STOOMLINK_VERBOSE: "true"
+      staging:
+        env:
+          STOOMLINK_VERBOSE: "true"
+      production:
+        env:
+          STOOMLINK_VERBOSE: "true"
+  broadcast-tvmap-generator:
+    envs:
+      playground:
+        env:
+          STOOMLINK_VERBOSE: "true"
+          DIGITALOCEAN_SPACES_HOST: "fra1.digitaloceanspaces.com"
+          DIGITALOCEAN_SPACES_ACCESS_KEY: "KACRGYN7IPMS6LJKM5BD"
+          DIGITALOCEAN_SPACES_SECRET_KEY: "QVI5kd7lFaNT2NL08wL/QrtB1zN5WS7Uq65xsn9ch+g"
+          BROADCAST_TVMAP_GENERATOR_CDN_BUCKET: "stoomlink-assets"
+          BROADCAST_TVMAP_GENERATOR_CDN_FOLDER_PATH: "broadcast/playground"
+      staging:
+        env:
+          STOOMLINK_VERBOSE: "true"
+          DIGITALOCEAN_SPACES_HOST: "fra1.digitaloceanspaces.com"
+          DIGITALOCEAN_SPACES_ACCESS_KEY: "KACRGYN7IPMS6LJKM5BD"
+          DIGITALOCEAN_SPACES_SECRET_KEY: "QVI5kd7lFaNT2NL08wL/QrtB1zN5WS7Uq65xsn9ch+g"
+          BROADCAST_TVMAP_GENERATOR_CDN_BUCKET: "stoomlink-assets"
+          BROADCAST_TVMAP_GENERATOR_CDN_FOLDER_PATH: "broadcast/production" #Don't tell. While we don't have prod.
+      production:
+        env:
+          STOOMLINK_VERBOSE: "true"
+          DIGITALOCEAN_SPACES_HOST: "fra1.digitaloceanspaces.com"
+          DIGITALOCEAN_SPACES_ACCESS_KEY: "KACRGYN7IPMS6LJKM5BD"
+          DIGITALOCEAN_SPACES_SECRET_KEY: "QVI5kd7lFaNT2NL08wL/QrtB1zN5WS7Uq65xsn9ch+g"
+          BROADCAST_TVMAP_GENERATOR_CDN_BUCKET: "stoomlink-assets"
+          BROADCAST_TVMAP_GENERATOR_CDN_FOLDER_PATH: "broadcast/production"
+
+# ==================================================================================================
+# Shared
+# ==================================================================================================
+
+image:
+  tag: 1.1.2-rc.63
+  name: stoomlink-devcontainer-base-backend
+  owner: nextmoov
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: ".5"
+  limits:
+    memory: "200Mi"
+    cpu: ".5"
+
+ingress:
+  enabled: true
+  host: stoomlink.io
+  subdomain: ingestion
+
+secrets:
+  dockerRegistry: registry-docker-io-nextmoov
+env:
+  nodeEnv: "production"
+  stoomlinkEnv: "playground"
+  pgConnectionString: "stoomlink-main-db-cluster-202107-do-user-211558-0.b.db.ondigitalocean.com:25060"
+  kafkaUrl: "ingestion-storage-cp-kafka:9092"
+  elasticUrl: "http://elasticsearch-master:9200"
+  sentryDsn: "https://00000000000000000000000000000000@x000000.ingest.sentry.io/0000000"
+  apmServerHost: "http://apm-es:8200"
